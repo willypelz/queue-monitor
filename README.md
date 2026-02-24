@@ -262,8 +262,8 @@ All API endpoints are prefixed with `/queue-monitor/api`:
 
 ## Requirements
 
-- PHP 8.1 or higher
-- Laravel 10.x or 11.x
+- PHP 8.2 or higher
+- Laravel 10.x, 11.x, or 12.x
 - Database (MySQL, PostgreSQL, SQLite, etc.)
 
 ## Documentation

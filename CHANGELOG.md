@@ -16,6 +16,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Queue comparison charts
 - Custom metric definitions
 
+## [1.1.0] - 2026-02-24
+
+### Added
+- Laravel 12 support
+- PHPUnit 11 support
+- PHP 8.4 compatibility
+
+### Changed
+- **BREAKING**: Minimum PHP version raised from `^8.1` to `^8.2`
+- Updated all Illuminate dependencies to support Laravel 10, 11, and 12
+- Updated Orchestra Testbench to `^8.0|^9.0|^10.0`
+- Updated PHPUnit to `^10.0|^11.0`
+- Migrated test annotations from doc-comments to PHPUnit attributes
+- Updated PHPUnit configuration to version 11.5 schema
+- Improved test setup with `defineDatabaseMigrations()` method
+
+### Fixed
+- Test migration loading in Laravel 12
+- PHPUnit deprecation warnings
+
 ## [1.0.0] - 2026-02-24
 
 ### Added
@@ -51,9 +71,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Laravel | PHP    | Status       |
 |---------|---------|--------|--------------|
-| 1.x     | 10-11   | ^8.1   | Active       |
+| 1.1.x   | 10-12   | ^8.2   | Active       |
+| 1.0.x   | 10-11   | ^8.1   | Deprecated   |
 
 ## Upgrade Guide
+
+### From 1.0 to 1.1
+
+1. **Update PHP version**: Ensure your application runs PHP 8.2 or higher
+2. **Update dependencies**: Run `composer update willypelz/queue-monitor`
+3. **Run tests**: Test your application thoroughly with the new version
+4. **Update test annotations** (if you have custom tests): Replace `/** @test */` with `#[Test]` attribute
+
+See [LARAVEL_12_UPGRADE.md](LARAVEL_12_UPGRADE.md) for detailed upgrade information.
 
 ### From 0.x to 1.0
 

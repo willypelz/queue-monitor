@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobFailed;
+use PHPUnit\Framework\Attributes\Test;
 use QueueMonitor\Models\QueueMonitorJob;
 use QueueMonitor\Tests\TestCase;
 
 class MonitorRecorderTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_records_job_processing(): void
     {
         $this->artisan('migrate')->run();
@@ -28,7 +29,7 @@ class MonitorRecorderTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_tracks_job_runtime(): void
     {
         $this->artisan('migrate')->run();

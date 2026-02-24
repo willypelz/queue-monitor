@@ -28,5 +28,10 @@ abstract class TestCase extends BaseTestCase
             'prefix' => '',
         ]);
     }
+
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+    }
 }
 
