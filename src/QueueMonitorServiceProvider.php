@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace QueueMonitor;
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use QueueMonitor\Console\PruneCommand;
 use QueueMonitor\Contracts\QueueMonitorRepository;
@@ -33,6 +34,13 @@ class QueueMonitorServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Force HTTPS URLs if configured or if request is HTTPS
+        if (config('queue-monitor.ui.force_https') ||
+            (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) {
+            URL::forceScheme('https');
+        }
+
         $this->publishes([
             __DIR__ . '/../config/queue-monitor.php' => config_path('queue-monitor.php'),
         ], 'queue-monitor-config');

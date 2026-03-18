@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>Queue Monitor</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{{ config('queue-monitor.ui.cdn.tailwind', 'https://cdn.tailwindcss.com') }}"></script>
+    <script src="{{ config('queue-monitor.ui.cdn.vue', 'https://unpkg.com/vue@3/dist/vue.global.js') }}"></script>
+    <script src="{{ config('queue-monitor.ui.cdn.axios', 'https://unpkg.com/axios/dist/axios.min.js') }}"></script>
 </head>
 <body class="bg-gray-100">
     <div id="app">
@@ -110,6 +111,18 @@
     <script>
         const { createApp } = Vue;
 
+        // Configure Axios to prevent mixed-content issues
+        axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Force all URLs to use the same protocol as the current page
+        axios.interceptors.request.use(function (config) {
+            if (config.url && config.url.startsWith('http:') && window.location.protocol === 'https:') {
+                config.url = config.url.replace('http:', 'https:');
+            }
+            return config;
+        });
+
         createApp({
             data() {
                 return {
@@ -125,10 +138,24 @@
                         connection: 'database',
                         queue: 'default',
                         throttleRate: 60
+                    },
+                    // Use relative URLs to avoid mixed-content issues
+                    apiEndpoints: {
+                        stats: '{{ config('queue-monitor.ui.force_https') ? secure_url(config('queue-monitor.path', 'queue-monitor') . '/api/stats') : url(config('queue-monitor.path', 'queue-monitor') . '/api/stats') }}',
+                        jobs: '{{ config('queue-monitor.ui.force_https') ? secure_url(config('queue-monitor.path', 'queue-monitor') . '/api/jobs') : url(config('queue-monitor.path', 'queue-monitor') . '/api/jobs') }}',
+                        pause: '{{ config('queue-monitor.ui.force_https') ? secure_url(config('queue-monitor.path', 'queue-monitor') . '/api/control/pause') : url(config('queue-monitor.path', 'queue-monitor') . '/api/control/pause') }}',
+                        resume: '{{ config('queue-monitor.ui.force_https') ? secure_url(config('queue-monitor.path', 'queue-monitor') . '/api/control/resume') : url(config('queue-monitor.path', 'queue-monitor') . '/api/control/resume') }}',
+                        throttle: '{{ config('queue-monitor.ui.force_https') ? secure_url(config('queue-monitor.path', 'queue-monitor') . '/api/control/throttle') : url(config('queue-monitor.path', 'queue-monitor') . '/api/control/throttle') }}',
+                        retry: '{{ config('queue-monitor.ui.force_https') ? secure_url(config('queue-monitor.path', 'queue-monitor') . '/api/control/retry') : url(config('queue-monitor.path', 'queue-monitor') . '/api/control/retry') }}'
                     }
                 }
             },
             mounted() {
+                // Ensure URLs use correct protocol
+                Object.keys(this.apiEndpoints).forEach(key => {
+                    this.apiEndpoints[key] = this.fixProtocol(this.apiEndpoints[key]);
+                });
+
                 this.fetchStats();
                 this.fetchJobs();
 
@@ -139,9 +166,16 @@
                 }, {{ config('queue-monitor.ui.refresh_seconds', 10) * 1000 }});
             },
             methods: {
+                fixProtocol(url) {
+                    // Convert to protocol-relative or match current protocol
+                    if (window.location.protocol === 'https:' && url.startsWith('http:')) {
+                        return url.replace('http:', 'https:');
+                    }
+                    return url;
+                },
                 async fetchStats() {
                     try {
-                        const response = await axios.get('{{ route('queue-monitor.stats') }}');
+                        const response = await axios.get(this.apiEndpoints.stats);
                         this.stats = response.data;
                     } catch (error) {
                         console.error('Failed to fetch stats:', error);
@@ -149,7 +183,7 @@
                 },
                 async fetchJobs() {
                     try {
-                        const response = await axios.get('{{ route('queue-monitor.jobs') }}');
+                        const response = await axios.get(this.apiEndpoints.jobs);
                         this.jobs = response.data.jobs;
                     } catch (error) {
                         console.error('Failed to fetch jobs:', error);
@@ -157,7 +191,7 @@
                 },
                 async pauseQueue() {
                     try {
-                        await axios.post('{{ route('queue-monitor.control.pause') }}', this.controlForm);
+                        await axios.post(this.apiEndpoints.pause, this.controlForm);
                         alert('Queue paused successfully');
                     } catch (error) {
                         alert('Failed to pause queue');
@@ -165,7 +199,7 @@
                 },
                 async resumeQueue() {
                     try {
-                        await axios.post('{{ route('queue-monitor.control.resume') }}', this.controlForm);
+                        await axios.post(this.apiEndpoints.resume, this.controlForm);
                         alert('Queue resumed successfully');
                     } catch (error) {
                         alert('Failed to resume queue');
@@ -173,7 +207,7 @@
                 },
                 async throttleQueue() {
                     try {
-                        await axios.post('{{ route('queue-monitor.control.throttle') }}', {
+                        await axios.post(this.apiEndpoints.throttle, {
                             ...this.controlForm,
                             rate: this.controlForm.throttleRate
                         });
@@ -184,7 +218,7 @@
                 },
                 async retryQueue() {
                     try {
-                        await axios.post('{{ route('queue-monitor.control.retry') }}', this.controlForm);
+                        await axios.post(this.apiEndpoints.retry, this.controlForm);
                         alert('Retrying failed jobs');
                     } catch (error) {
                         alert('Failed to retry jobs');

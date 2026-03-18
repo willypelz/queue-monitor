@@ -44,6 +44,10 @@ php artisan queue-monitor:install
 
 That's it! Visit `http://your-app.test/queue-monitor` to see your dashboard.
 
+> **✅ Auto-Discovery**: This package supports Laravel's auto-discovery feature. The service provider is automatically registered when you install the package.
+
+> **🔒 HTTPS Ready**: All external resources use HTTPS to prevent mixed-content blocking. Works seamlessly with secure applications.
+
 ### Manual Installation
 
 Install the package via Composer:
@@ -272,6 +276,8 @@ All API endpoints are prefixed with `/queue-monitor/api`:
 - [Queue Controls](docs/controls.md) - Pause, resume, throttle, and retry
 - [API Documentation](docs/api.md) - RESTful API endpoints
 - [Middleware Setup](docs/middleware.md) - Job middleware configuration
+- [Security Considerations](docs/security.md) - HTTPS, mixed-content prevention, and access control
+- [API Endpoint Fix](docs/api-endpoint-fix.md) - Fix blocked:mixed-content for API calls
 - [Advanced Features](docs/advanced.md) - Performance optimization, alerting, and more
 
 ## Contributing

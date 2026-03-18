@@ -16,6 +16,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Queue comparison charts
 - Custom metric definitions
 
+## [1.1.1] - 2026-03-18
+
+### Fixed
+- **CRITICAL**: Fixed mixed-content blocking issue when package is installed in HTTPS applications
+- **CRITICAL**: Fixed API endpoints generating HTTP URLs causing blocked:mixed-content errors
+- All CDN resources now use HTTPS URLs by default to prevent browser security warnings
+- Added Content-Security-Policy meta tag to automatically upgrade insecure requests
+- Added automatic HTTPS detection for servers behind proxies/load balancers (X-Forwarded-Proto support)
+- Added Axios interceptor as client-side failsafe to convert HTTP to HTTPS
+
+### Added
+- Configurable CDN URLs in `queue-monitor.ui.cdn` config option
+- `force_https` configuration option to force HTTPS URLs for API endpoints
+- Support for custom CDN sources (useful for internal networks, regional CDNs, or self-hosted assets)
+- Automatic URL protocol detection and correction in service provider
+- Comprehensive security documentation covering HTTPS, CSP, and access control
+- Mixed-content troubleshooting guide with API endpoint fixes
+- Upgrade guide for smooth transition to v1.1.1
+
+### Changed
+- Dashboard view now loads CDN resources from configuration instead of hardcoded URLs
+- Config file now includes CDN configuration section with HTTPS defaults
+- Service provider now automatically detects HTTPS and forces secure URLs when needed
+- API endpoint URLs now respect current protocol and force_https configuration
+
 ## [1.1.0] - 2026-02-24
 
 ### Added

@@ -202,6 +202,19 @@ php artisan queue-monitor:install
 2. Verify database connection in `.env`
 3. Run: `php artisan config:clear`
 
+### Mixed-content blocking (HTTPS applications)
+
+**Fixed in latest version!** The dashboard now includes automatic protection against mixed-content errors.
+
+If you're still experiencing issues:
+
+1. Ensure you have the latest version: `composer update willypelz/queue-monitor`
+2. Clear your browser cache
+3. Verify all CDN URLs in `config/queue-monitor.php` use HTTPS
+4. Check the dashboard view includes: `<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">`
+
+For more details, see [Security Considerations](./security.md).
+
 ---
 
 ## Next Steps
