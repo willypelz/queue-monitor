@@ -49,6 +49,14 @@ class RedisQueueMonitorRepositoryTest extends OrchestraTestCase
             'port' => env('REDIS_PORT', 6379),
             'database' => env('REDIS_DB', 0),
         ]);
+
+        // Also set 'redis' connection (for when auto-detection looks for it)
+        $app['config']->set('database.redis.redis', [
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD'),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_DB', 0),
+        ]);
     }
 
     public function test_record_processing(): void
