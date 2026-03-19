@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **NEW**: Redis driver support for high-performance queue monitoring
+- Configurable storage driver: choose between 'database' or 'redis'
+- RedisQueueMonitorRepository with optimized key-value storage
+- Automatic TTL-based expiration for Redis data
+- Support for custom Redis connections
+- Comprehensive Redis driver documentation
+- Redis repository test suite
+- **Smart auto-detection**: Automatically uses Redis when `QUEUE_CONNECTION=redis`
+- **Automatic driver detection**: Monitor storage follows queue connection by default
+
+### Changed
+- **IMPROVED**: Driver now auto-detects from `QUEUE_CONNECTION` for zero-config setup
+- Default driver intelligently switches based on your queue connection
+- `QUEUE_MONITOR_DRIVER` is now optional - only needed for override scenarios
+- Redis driver is used when `QUEUE_CONNECTION=redis`, database otherwise
+- Service provider now dynamically binds repository based on driver configuration
+- Configuration file includes driver selection and Redis options
+- Redis connection defaults to using `QUEUE_CONNECTION` environment variable for seamless integration
+
+### Migration Guide
+- **No action needed** for most users - driver auto-detects from `QUEUE_CONNECTION`!
+- If `QUEUE_CONNECTION=redis`, monitoring uses Redis automatically
+- If `QUEUE_CONNECTION=database`, monitoring uses database automatically
+- Only set `QUEUE_MONITOR_DRIVER` if you want different storage than your queue
+- See [CONFIGURATION_EXPLAINED.md](docs/CONFIGURATION_EXPLAINED.md) for details
+
 ### Planned Features
 - Webhooks for queue events
 - Email/Slack notifications for failures

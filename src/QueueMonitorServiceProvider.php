@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use QueueMonitor\Console\PruneCommand;
 use QueueMonitor\Contracts\QueueMonitorRepository;
 use QueueMonitor\Repositories\DatabaseQueueMonitorRepository;
+use QueueMonitor\Repositories\RedisQueueMonitorRepository;
 use QueueMonitor\Support\MonitorRecorder;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Events\JobProcessed;
@@ -21,8 +22,14 @@ class QueueMonitorServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/queue-monitor.php', 'queue-monitor');
 
-        $this->app->singleton(QueueMonitorRepository::class, function () {
-            return new DatabaseQueueMonitorRepository();
+        $this->app->singleton(QueueMonitorRepository::class, function ($app) {
+            $driver = config('queue-monitor.driver', 'database');
+
+            return match ($driver) {
+                'redis' => new RedisQueueMonitorRepository(),
+                'database' => new DatabaseQueueMonitorRepository(),
+                default => throw new \InvalidArgumentException("Unsupported queue monitor driver: {$driver}. Use 'database' or 'redis'."),
+            };
         });
 
         $this->app->singleton(MonitorRecorder::class, function ($app) {

@@ -8,6 +8,16 @@ return [
     // Add 'auth' or custom middleware in consuming apps for protection.
     'middleware' => ['web'],
 
+    // Storage driver: 'database' or 'redis'
+    // Automatically uses 'redis' if QUEUE_CONNECTION is 'redis', otherwise 'database'
+    // Override with QUEUE_MONITOR_DRIVER if you want different storage than your queue
+    'driver' => env('QUEUE_MONITOR_DRIVER', env('QUEUE_CONNECTION') === 'redis' ? 'redis' : 'database'),
+
+    // Redis configuration (when driver is 'redis')
+    'redis' => [
+        'connection' => env('QUEUE_MONITOR_REDIS_CONNECTION', env('QUEUE_CONNECTION', 'redis')),
+    ],
+
     // Retain job history for this many days.
     'retention_days' => 14,
 

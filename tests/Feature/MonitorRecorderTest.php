@@ -14,6 +14,12 @@ use QueueMonitor\Tests\TestCase;
 
 class MonitorRecorderTest extends TestCase
 {
+    protected function defineEnvironment($app): void
+    {
+        // Use database driver for this test
+        $app['config']->set('queue-monitor.driver', 'database');
+    }
+
     #[Test]
     public function it_records_job_processing(): void
     {
