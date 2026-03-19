@@ -76,7 +76,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - PHP 8.4 compatibility
 
 ### Changed
-- **BREAKING**: Minimum PHP version raised from `^8.1` to `^8.2`
 - Updated all Illuminate dependencies to support Laravel 10, 11, and 12
 - Updated Orchestra Testbench to `^8.0|^9.0|^10.0`
 - Updated PHPUnit to `^10.0|^11.0`
@@ -123,8 +122,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Laravel | PHP    | Status       |
 |---------|---------|--------|--------------|
-| 1.1.x   | 10-12   | ^8.2   | Active       |
-| 1.0.x   | 10-11   | ^8.1   | Deprecated   |
+| 1.2.x   | 10-12   | ^8.1   | In Development |
+| 1.1.x   | 10-12   | ^8.1   | Active       |
+| 1.0.x   | 10-11   | ^8.1   | Maintenance  |
 
 ## Upgrade Guide
 
