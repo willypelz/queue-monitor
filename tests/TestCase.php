@@ -27,6 +27,12 @@ abstract class TestCase extends BaseTestCase
             'database' => ':memory:',
             'prefix' => '',
         ]);
+
+        // Set queue connection to database for tests
+        $app['config']->set('queue.default', 'database');
+
+        // Set queue-monitor driver to database for tests
+        $app['config']->set('queue-monitor.driver', 'database');
     }
 
     protected function defineDatabaseMigrations(): void

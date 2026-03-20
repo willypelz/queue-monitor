@@ -9,13 +9,13 @@ return [
     'middleware' => ['web'],
 
     // Storage driver: 'database' or 'redis'
-    // Automatically uses 'redis' if QUEUE_CONNECTION is 'redis', otherwise 'database'
-    // Override with QUEUE_MONITOR_DRIVER if you want different storage than your queue
-    'driver' => env('QUEUE_MONITOR_DRIVER', env('QUEUE_CONNECTION') === 'redis' ? 'redis' : 'database'),
+    // Defaults to 'database'. Set to 'redis' if you want to use Redis for storage
+    // Override with QUEUE_MONITOR_DRIVER environment variable
+    'driver' => env('QUEUE_MONITOR_DRIVER', 'database'),
 
     // Redis configuration (when driver is 'redis')
     'redis' => [
-        'connection' => env('QUEUE_MONITOR_REDIS_CONNECTION', env('QUEUE_CONNECTION', 'redis')),
+        'connection' => env('QUEUE_MONITOR_REDIS_CONNECTION', env('QUEUE_CONNECTION', 'default')),
     ],
 
     // Retain job history for this many days.

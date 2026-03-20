@@ -25,10 +25,15 @@ class QueueMonitorServiceProvider extends ServiceProvider
         $this->app->singleton(QueueMonitorRepository::class, function ($app) {
             $driver = config('queue-monitor.driver', 'database');
 
+            if (!in_array($driver, ['redis', 'database'], true)) {
+                throw new \InvalidArgumentException(
+                    "Unsupported queue monitor driver: {$driver}. Use 'database' or 'redis'."
+                );
+            }
+
             return match ($driver) {
                 'redis' => new RedisQueueMonitorRepository(),
                 'database' => new DatabaseQueueMonitorRepository(),
-                default => throw new \InvalidArgumentException("Unsupported queue monitor driver: {$driver}. Use 'database' or 'redis'."),
             };
         });
 

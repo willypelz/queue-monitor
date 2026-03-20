@@ -30,7 +30,16 @@ class RedisQueueMonitorRepository implements QueueMonitorRepository
      */
     protected function redis()
     {
-        return Redis::connection($this->getConnection());
+        try {
+            return Redis::connection($this->getConnection());
+        } catch (\Exception $e) {
+            throw new \RuntimeException(
+                "Redis connection [{$this->getConnection()}] is not configured. "
+                . "Please configure Redis or set QUEUE_MONITOR_DRIVER=database in your .env file.",
+                0,
+                $e
+            );
+        }
     }
 
     /**
