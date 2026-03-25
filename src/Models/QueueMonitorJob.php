@@ -16,6 +16,8 @@ class QueueMonitorJob extends Model
         'payload' => 'array',
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
+        'runtime_ms' => 'integer',
+        'attempts' => 'integer',
     ];
 }
 

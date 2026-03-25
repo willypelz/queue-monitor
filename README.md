@@ -92,10 +92,10 @@ return [
 
     // Middleware for dashboard access
     'middleware' => ['web'],
-    
+
     // Storage driver: 'database' or 'redis'
     'driver' => env('QUEUE_MONITOR_DRIVER', 'database'),
-    
+
     // Redis configuration (when driver is 'redis')
     'redis' => [
         'connection' => env('QUEUE_MONITOR_REDIS_CONNECTION', 'default'),
@@ -284,19 +284,19 @@ Choose the right storage driver for your needs:
 
 ### When to Use Redis
 
-✅ Processing 1000+ jobs per minute  
-✅ Multiple servers sharing monitoring data  
-✅ Real-time dashboard updates required  
-✅ Want to reduce database load  
-✅ Already using Redis for cache/queues  
+✅ Processing 1000+ jobs per minute
+✅ Multiple servers sharing monitoring data
+✅ Real-time dashboard updates required
+✅ Want to reduce database load
+✅ Already using Redis for cache/queues
 
 ### When to Use Database
 
-✅ Low to medium job volume  
-✅ Need permanent data storage  
-✅ SQL queries for reporting  
-✅ Single server deployment  
-✅ Compliance/audit requirements  
+✅ Low to medium job volume
+✅ Need permanent data storage
+✅ SQL queries for reporting
+✅ Single server deployment
+✅ Compliance/audit requirements
 
 **To use database driver instead:**
 ```env

@@ -46,7 +46,7 @@ class DatabaseQueueMonitorRepository implements QueueMonitorRepository
         }
 
         $finishedAt = $data['finished_at'];
-        $runtimeMs = $job->started_at ? $job->started_at->diffInMilliseconds($finishedAt) : null;
+        $runtimeMs = $job->started_at ? (int) round($job->started_at->diffInMilliseconds($finishedAt)) : null;
 
         $job->update([
             'status' => 'processed',
@@ -69,7 +69,7 @@ class DatabaseQueueMonitorRepository implements QueueMonitorRepository
         }
 
         $finishedAt = $data['finished_at'];
-        $runtimeMs = $job->started_at ? $job->started_at->diffInMilliseconds($finishedAt) : null;
+        $runtimeMs = $job->started_at ? (int) round($job->started_at->diffInMilliseconds($finishedAt)) : null;
 
         $job->update([
             'status' => 'failed',

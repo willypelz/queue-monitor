@@ -125,7 +125,7 @@ class RedisQueueMonitorRepository implements QueueMonitorRepository
 
         $finishedAt = $data['finished_at'];
         $startedAt = isset($jobData['started_at']) ? Carbon::parse($jobData['started_at']) : null;
-        $runtimeMs = $startedAt ? $startedAt->diffInMilliseconds($finishedAt) : null;
+        $runtimeMs = $startedAt ? (int) round($startedAt->diffInMilliseconds($finishedAt)) : null;
 
         // Update job data
         $this->redis()->hMSet($key, [
@@ -162,7 +162,7 @@ class RedisQueueMonitorRepository implements QueueMonitorRepository
 
         $finishedAt = $data['finished_at'];
         $startedAt = isset($jobData['started_at']) ? Carbon::parse($jobData['started_at']) : null;
-        $runtimeMs = $startedAt ? $startedAt->diffInMilliseconds($finishedAt) : null;
+        $runtimeMs = $startedAt ? (int) round($startedAt->diffInMilliseconds($finishedAt)) : null;
 
         // Update job data
         $this->redis()->hMSet($key, [
